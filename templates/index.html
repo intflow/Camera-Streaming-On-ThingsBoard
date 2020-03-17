@@ -1,0 +1,14 @@
+<html lang="en">
+
+<body>
+  <div class="container">
+      <div class="row">
+        {% for id in range(0,cameras_id) %}
+            <div class="col-lg-5">
+              <img src="{{ url_for('video_feed', list_id=id) }}" width="100%"><br/>
+            </div>
+          {%  endfor %}
+      </div>
+  </div>
+</body>
+</html>
