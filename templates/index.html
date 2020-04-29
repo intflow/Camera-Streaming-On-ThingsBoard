@@ -1,5 +1,5 @@
 <html lang="en">
-
+  
 <body>
   <div class="container">
       <div class="row">
@@ -8,7 +8,72 @@
               <img src="{{ url_for('video_feed', list_id=id) }}" width="100%"><br/>
             </div>
           {%  endfor %}
+
+          <button class="button" id="up" >up</button>
+          <button class="button" id="down" >down</button>
+          <button class="button" id="left" >left</button>
+          <button class="button" id="right" >right</button>
+          <button class="button" id="left_up" >left_up</button>
+          <button class="button" id="right_up" >right_up</button>
+          <button class="button" id="left_down" >left_down</button>
+          <button class="button" id="right_down" >right_down</button>
+          <button class="button" id="zoom_in" >zoom_in</button>
+          <button class="button" id="zoom_out" >zoom_out</button>
+          <button class="home" id="home">home</button>
+          {% for ids in range(0,img_id) %}
+            <img src= "{{ url_for('get_img',list_id= ids) }}">
+          {%  endfor %}
       </div>
   </div>
+    <script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        var isTouchDevice = 'ontouchstart' in document.documentElement;
+        $(".button").mousedown(function(e){
+          if(isTouchDevice == false){
+            e.preventDefault();
+          var id = $(this).attr('id')
+          $.ajax({
+              method:'post',
+              url:'http://intflow.zapto.org:7011/'+id
+            });
+          }
+        });
+        $(".button").mouseup(function(){
+          if(isTouchDevice == false){
+            $.ajax({
+              method: 'post',
+              url:'http://intflow.zapto.org:7011/stop'
+            });
+          }
+        });
+        $(".button").on('touchstart', function(e){
+          if(isTouchDevice){
+            e.preventDefault();
+            var id = $(this).attr('id')
+            $.ajax({
+                method:'post',
+                url:'http://intflow.zapto.org:7011/'+id
+              });
+          }
+        })
+        $(".button").on('touchend', function(e){
+          if(isTouchDevice){
+            $.ajax({
+              method: 'post',
+              url:'http://intflow.zapto.org:7011/stop'
+            });
+          }
+        })
+        $(".home").click(function(e){
+        e.preventDefault();
+            var id = $(this).attr('id')
+            $.ajax({
+                method:'post',
+                url:'http://intflow.zapto.org:7011/'+id
+              });
+        })
+      })
+</script>
 </body>
 </html>
