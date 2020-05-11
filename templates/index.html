@@ -1,79 +1,136 @@
 <html lang="en">
-  
-<body>
-  <div class="container">
-      <div class="row">
-        {% for id in range(0,cameras_id) %}
-            <div class="col-lg-5">
-              <img src="{{ url_for('video_feed', list_id=id) }}" width="100%"><br/>
-            </div>
-          {%  endfor %}
-
-          <button class="button" id="up" >up</button>
-          <button class="button" id="down" >down</button>
-          <button class="button" id="left" >left</button>
-          <button class="button" id="right" >right</button>
-          <button class="button" id="left_up" >left_up</button>
-          <button class="button" id="right_up" >right_up</button>
-          <button class="button" id="left_down" >left_down</button>
-          <button class="button" id="right_down" >right_down</button>
-          <button class="button" id="zoom_in" >zoom_in</button>
-          <button class="button" id="zoom_out" >zoom_out</button>
-          <button class="home" id="home">home</button>
-          {% for ids in range(0,img_id) %}
-            <img src= "{{ url_for('get_img',list_id= ids) }}">
-          {%  endfor %}
-      </div>
-  </div>
-    <script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script>
-      $(document).ready(function(){
-        var isTouchDevice = 'ontouchstart' in document.documentElement;
-        $(".button").mousedown(function(e){
-          if(isTouchDevice == false){
-            e.preventDefault();
-          var id = $(this).attr('id')
-          $.ajax({
-              method:'post',
-              url:'http://intflow.zapto.org:7011/'+id
-            });
-          }
-        });
-        $(".button").mouseup(function(){
-          if(isTouchDevice == false){
-            $.ajax({
-              method: 'post',
-              url:'http://intflow.zapto.org:7011/stop'
-            });
-          }
-        });
-        $(".button").on('touchstart', function(e){
-          if(isTouchDevice){
-            e.preventDefault();
-            var id = $(this).attr('id')
-            $.ajax({
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mycss.css') }}">
+  </head>
+  <body>
+    <div class="container">
+        <div class="row">
+          {% for id in range(0,cameras_id) %}
+              <div class="video_div">
+                <img id="video" src="{{ url_for('video_feed', list_id=id) }}">
+              </div>
+            {%  endfor %}
+            <div class ='button_div'>
+              <table id="button_table">
+                  <tr>
+                      <td>
+                          <button class="button" id="left_up">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 0) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="button" id="up">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 1) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="button" id="right_up">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 2) }}">
+                          </button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <button class="button" id="left">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 3) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="home" id="home">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 4) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="button" id="right">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 5) }}">
+                          </button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <button class="button" id="left_down">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 6) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="button" id="down">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 7) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="button" id="right_down">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 8) }}">
+                          </button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <button class="button" id="zoom_in">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 9) }}">
+                          </button>
+                      </td>
+                      <td>
+                          <button class="button" id="zoom_out">
+                              <img class="button_img" src="{{ url_for('get_img',list_id= 10) }}">
+                          </button>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+            
+        </div>
+    </div>
+      <script src = "https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script>
+        $(document).ready(function(){
+          var isTouchDevice = 'ontouchstart' in document.documentElement;
+          var ip = document.location.href
+          $(".button").mousedown(function(e){
+            if(isTouchDevice == false){
+              e.preventDefault();
+              var id = $(this).attr('id')
+              $.ajax({
                 method:'post',
-                url:'http://intflow.zapto.org:7011/'+id
+                url:ip+id
               });
-          }
-        })
-        $(".button").on('touchend', function(e){
-          if(isTouchDevice){
-            $.ajax({
-              method: 'post',
-              url:'http://intflow.zapto.org:7011/stop'
-            });
-          }
-        })
-        $(".home").click(function(e){
-        e.preventDefault();
-            var id = $(this).attr('id')
-            $.ajax({
-                method:'post',
-                url:'http://intflow.zapto.org:7011/'+id
+            }
+          });
+          $(".button").mouseup(function(){
+            if(isTouchDevice == false){
+              $.ajax({
+                method: 'post',
+                url:ip+'stop'
               });
+            }
+          });
+          $(".button").on('touchstart', function(e){
+            if(isTouchDevice){
+              e.preventDefault();
+              var id = $(this).attr('id')
+              $.ajax({
+                  method:'post',
+                  url:ip+id
+                });
+            }
+          })
+          $(".button").on('touchend', function(e){
+            if(isTouchDevice){
+              $.ajax({
+                method: 'post',
+                url:ip+'stop'
+              });
+            }
+          })
+          $(".home").click(function(e){
+          e.preventDefault();
+              var id = $(this).attr('id')
+              $.ajax({
+                  method:'post',
+                  url:ip+id
+                });
+          })
         })
-      })
-</script>
-</body>
+      </script>
+  </body>
 </html>
