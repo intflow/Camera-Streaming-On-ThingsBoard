@@ -9,7 +9,7 @@ import time
 
 app = Flask(__name__)
 camera_ids = [
-    'rtsp://admin:intflow3121@192.168.0.110:554/Streaming/Channels/102',
+    'rtsp://admin:intflow3121@192.168.1.62:554/Streaming/Channels/102',
     # 'rtsp://admin:kmjeon3121@192.168.1.108:554/cam/realmonitor?channel=1&subtype=1'
    ]
 
@@ -28,7 +28,7 @@ img_ids = [
     'zoom_out.png'
 ]
 
-IP="192.168.0.110"   # Camera IP address
+IP="192.168.1.62"   # Camera IP address
 PORT=80           # Port
 USER="admin"         # Username
 PASS="intflow3121"        # Password
@@ -235,8 +235,9 @@ def index():
 
 @app.route('/video_feed/<string:list_id>/', methods=["GET"])
 def video_feed(list_id):
-    return Response(gen_frames(list_id),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return 0
+    #return Response(gen_frames(list_id),
+    #                mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/get_img/<string:list_id>/', methods=["GET"])
 def get_img(list_id):
@@ -315,4 +316,4 @@ def stop():
 
 if __name__ == '__main__': 
     setup_move()
-    app.run(host='192.168.0.58',port = "7011", debug=False)
+    app.run(host='192.168.0.112',port = "11281", debug=False)
